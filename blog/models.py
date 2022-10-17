@@ -7,6 +7,9 @@ class Post(models.Model):
     hook_text = models.CharField(max_length=100, blank=True)
     content = models.TextField()
 
+    head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
+    # %Y = 2022, %y = 22
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
