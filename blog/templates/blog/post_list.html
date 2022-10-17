@@ -23,7 +23,7 @@
             <a class="nav-link" href="blog_list.html">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about_me.html">About me</a>
+            <a class="nav-link" href="about_me.html">AboutMe</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,9 +74,10 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-8 col-lg-9">
+        <div class="col-md-8 col-lg-9" id="main-area">
           <h2>Blog</h2>
           <!-- Featured blog post-->
+          {% if post_list.exists %}
           {% for p in post_list %}
           <div class="card mb-4">
             {% if p.head_image %}
@@ -98,6 +99,9 @@
             </div>
           </div>
           {% endfor %}
+          {% else %}
+            <h5>아무 게시물이 없습니다.</h5>
+          {% endif %}
 
           <!-- Pagination-->
           <nav aria-label="Pagination">

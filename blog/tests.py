@@ -17,8 +17,8 @@ class TestView(TestCase):
         self.assertEqual(soup.title.text, 'Blog')
         # navbar가 정상적으로 보이는지
         navbar = soup.nav
-        self.assertIn('Blog', soup.navbar.text)
-        self.assertIn('AboutMe', soup.navbar.text)
+        self.assertIn('Blog', navbar.text) # soup.nav.text
+        self.assertIn('AboutMe', navbar.text)
 
         # Post가 정상적으로 보이는지
         # 1. 맨 처음엔 Post가 하나도 안보임
@@ -28,7 +28,7 @@ class TestView(TestCase):
 
         # 2. Post가 있는 경우
         post_001 = Post.objects.create(title="첫번째 포스트", content="첫번째 포스트입니다")
-        post_001 = Post.objects.create(title="두번째 포스트", content="두번째 포스트입니다")
+        post_002 = Post.objects.create(title="두번째 포스트", content="두번째 포스트입니다")
         self.assertEqual(Post.objects.count(), 2)
 
         response = self.client.get('/blog/')
@@ -46,6 +46,7 @@ class TestView(TestCase):
         response = self.client.get(post_001.get_absolute_url())
         self.assertEqual(response.status_code, 200)
         soup = BeautifulSoup(response.content, 'html.parser')
+
         navbar = soup.nav
-        self.assertIn('Blog', soup.navbar.text)
-        self.assertIn('AboutMe', soup.navbar.text)
+        self.assertIn('Blog', navbar.text)
+        self.assertIn('AboutMe', navbar.text)
