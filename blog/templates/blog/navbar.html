@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
       <a class="navbar-brand" href="/">InternetProgramming</a>
@@ -7,7 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/blog/">Blog</a>
@@ -15,21 +17,22 @@
           <li class="nav-item">
             <a class="nav-link" href="/about_me/">AboutMe</a>
           </li>
+        </ul>
+        <ul class="navbar-nav ml-auto"> <!-- 여기서 ml-auto로 넣어도 된다 -->
+          {% if user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown link
+              {{user.username}}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+              <a class="dropdown-item" href="/accounts/logout/">LogOut</a>
+              </div>
           </li>
-        </ul>
-        <ul class="navbar-nav "> <!-- 여기서 ml-auto로 넣어도 된다 -->
+          {% else %}
           <li class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LogIn</a> <!--다른 메뉴와 구분-->
           </li>
+          {% endif %}
         </ul>
       </div>
       </div>
@@ -47,11 +50,20 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-6">
-            <button type="button" class="btn btn-outline-dark btn-block btn-sm"><i class="fa-brands fa-google"></i> LogIn with Google</button>
-            <button type="button" class="btn btn-outline-dark btn-block btn-sm"><i class="fa-regular fa-envelope"></i> LogIn with Email</button>
+            <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+            href="{% provider_login_url 'google' %}">
+              <i class="fa-brands fa-google"></i> LogIn with Google
+            </a>
+            <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+              href="/accounts/login/">
+              <i class="fa-regular fa-envelope"></i> LogIn with Email
+            </a>
           </div>
           <div class="col-6">
-            <button type="button" class="btn btn-outline-dark btn-block btn-sm"><i class="fa-regular fa-envelope"></i> SignUp with Email</button>
+            <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+              href="/accounts/signup/">
+              <i class="fa-regular fa-envelope"></i> SignUp with Email
+            </a>
           </div>
         </div>
       </div>
