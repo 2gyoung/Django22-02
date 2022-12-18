@@ -5,6 +5,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+from .serializers import postSerializer
+
+class postViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = postSerializer
+
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment,pk=pk)
+    post = comment.post
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+        return redirect(post.get_absolute_url)
+    else:
+        PermissionDenied
 
 # Create your views here.
 # CBV로 포스트 목록 페이지 만들기
@@ -51,6 +66,7 @@ class PostList(ListView):
     model = Post
     # blog/templates/blog/index.html의 파일명을 post_list로 수정
     ordering = '-pk' # 포스트 최신순으로 보여주기
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PostList,self).get_context_data()

@@ -17,12 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings # 미디어 파일을 위한 url 지정
 from django.conf.urls.static import static # 미디어 파일을 위한 url 지정
+from rest_framework import routers
+from blog import views
+
+router = routers.DefaultRouter()
+router.register(r'tests', views.postViewSet)
 
 urlpatterns = [ # IP주소/
     path('admin/', admin.site.urls), # IP주소/admin
     path('blog/', include('blog.urls')), # IP주소/blog -> blog 앱 폴더의 urls.py 참고
     path('', include('single_pages.urls')), # IP주소/
-    path('accounts/', include('allauth.urls'))
+    path('accounts/', include('allauth.urls')),
+    path('drf/', include(router.urls))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 미디어 파일을 위한 url 지정

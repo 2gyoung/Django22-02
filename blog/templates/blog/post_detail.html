@@ -81,10 +81,40 @@
                                     <img class="mr-3 rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
                                     <div class="media-body ms-3">
                                         {% if user.is_authenticated and comment.author == user %}
-                                            <a role="button" class="btn btn-sm btn-info float-right"
-                                               href="/blog/update_comment/{{comment.pk}}/">
-                                                Edit
-                                            </a>
+                                            <div class="float-right">
+                                                <a role="button" class="btn btn-sm btn-info float-right"
+                                                    href="/blog/update_comment/{{comment.pk}}/">
+                                                    Edit
+                                                </a>
+                                                <a role="button" class="btn btn-sm btn-danger float-right"
+                                                   data-toggle="modal" data-target="#deleteModal-{{comment.pk}}"
+                                                   href="#">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        <!-- Modal -->
+<div class="modal fade" id="deleteModal-{{comment.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><h5>Are You Sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <del>{{comment | linebreaks}}</del>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a role="button" class="btn btn-secondary" data-dismiss="modal"
+            href="/blog/delete_comment/{{comment.pk}}/">
+            Delete
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
                                         {% endif %}
                                         <div class="fw-bold">
                                             {{comment.author.username}}
